@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prediction Result</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <style>
+    .alert {
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .alert-warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+    }
+    .alert-danger {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Mental Health Prediction Result</h1>
+
+    {% if prediction == "Healthy" %}
+      <div class="alert alert-success">You are Healthy! 🌟</div>
+    {% elif prediction == "Mild" %}
+      <div class="alert alert-warning">Mild issues detected. Take care! 🌿</div>
+    {% elif prediction == "Moderate" %}
+      <div class="alert alert-warning">Moderate concerns. Counseling recommended. 📚</div>
+    {% else %}
+      <div class="alert alert-danger">Severe issues detected! Seek professional help urgently. 🚨</div>
+    {% endif %}
+
+    <p>Your Mental Health Score: <strong>{{ score }}</strong></p>    
+    <p>Your predicted mental health status is: <strong>{{ prediction }}</strong></p>
+    <p><strong>Advice:</strong> {{ advice }}</p>
+
+    <a href="/" class="btn">Go Back</a>
+  </div>
+</body>
+</html>

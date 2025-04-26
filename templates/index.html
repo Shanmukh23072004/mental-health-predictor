@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mental Health Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <style>
+    body {
+      background: #f2f5f7;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      background: white;
+      margin: 40px auto;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    fieldset {
+      border: none;
+      margin-bottom: 25px;
+    }
+    legend {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      font-weight: 600;
+      color: #555;
+    }
+    label {
+      display: block;
+      margin: 12px 0 5px;
+      font-weight: 500;
+    }
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #fafafa;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4caf50;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #43a047;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Mental Health Prediction Form</h1>
+
+    <form action="/predict" method="POST">
+
+      <!-- Personal Details -->
+      <fieldset>
+        <legend>Personal Details</legend>
+
+        <label for="name">Name:</label> 
+        <input type="text" id="name" name="name" required />
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required />
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="college">College/University:</label>
+        <input type="text" id="college" name="college" required />
+
+        <label for="year_of_study">Year of Study:</label>
+        <input type="number" id="year_of_study" name="year_of_study" required />
+
+        <label for="cgpa">CGPA:</label>
+        <input type="number" step="0.01" id="cgpa" name="cgpa" required />
+
+        <label for="waiver">Scholarship or Waiver:</label>
+        <select id="waiver" name="waiver" required>
+          <option value="">Select...</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </fieldset>
+
+      <!-- Depression Assessment -->
+      <fieldset>
+        <legend>Depression Assessment</legend>
+
+        {% set questions = [
+          "Little interest or pleasure in doing things?",
+          "Feeling down, depressed, or hopeless?",
+          "Trouble falling/staying asleep, or sleeping too much?",
+          "Feeling tired or having little energy?",
+          "Poor appetite or overeating?",
+          "Feeling bad about yourself or feeling like a failure?",
+          "Trouble concentrating on tasks?",
+          "Moving/speaking slowly or restlessness?",
+          "Feeling anxious, nervous, or on edge?"
+        ] %}
+        {% set fields = [
+          'little_interest', 'feeling_down', 'sleep_trouble', 'feeling_tired',
+          'appetite', 'feeling_failure', 'concentration', 'restlessness', 'anxiety'
+        ] %}
+
+        {% for question in questions %}
+          <label>{{ loop.index }}. In a semester, how often have you {{ question }}</label>
+          <select name="{{ fields[loop.index0] }}" required>
+            <option value="not_at_all">Not at all</option>
+            <option value="several_days">Several days</option>
+            <option value="more_than_half">More than half the days</option>
+            <option value="nearly_every_day">Nearly every day</option>
+          </select>
+        {% endfor %}
+      </fieldset>
+
+      <!-- Stress Assessment -->
+      <fieldset>
+        <legend>Stress Assessment</legend>
+
+        {% set stress_keys = [
+          'upset_academic', 'control_academic', 'nervous_academic', 'cope_academic',
+          'confident_academic', 'manage_stress', 'lonely_academic',
+          'high_expectations', 'overwhelmed_academic', 'competent_academic'
+        ] %}
+
+        {% for key in stress_keys %}
+          <label>{{ loop.index }}. In a semester, how often have you {{ key.replace('_', ' ') }}?</label>
+          <select name="{{ key }}" required>
+            <option value="never">Never</option>
+            <option value="almost_never">Almost Never</option>
+            <option value="sometimes">Sometimes</option>
+            <option value="fairly_often">Fairly Often</option>
+            <option value="very_often">Very Often</option>
+          </select>
+        {% endfor %}
+      </fieldset>
+
+      <!-- Anxiety Assessment -->
+      <fieldset>
+        <legend>Anxiety Assessment</legend>
+    
+        {% set anxiety_keys = [
+        'nervous_pressure', 'stop_worrying', 'trouble_relaxing', 
+        'annoyed_pressure', 'worried_academic', 'restless_pressure', 'overwhelmed_responsibilities'
+        ] %}
+    
+        {% for key in anxiety_keys %}
+        <label>{{ loop.index }}. How often have you {{ key.replace('_', ' ') }}?</label>
+        <select name="{{ key }}" required>
+            <option value="not_at_all">Not at all</option>
+            <option value="several_days">Several days</option>
+            <option value="more_than_half">More than half the days</option>
+            <option value="nearly_every_day">Nearly every day</option>
+        </select>
+        {% endfor %}
+      </fieldset>  
+
+      <button type="submit">Predict Mental Health</button>
+    </form>
+  </div>
+</body>
+</html>
